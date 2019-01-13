@@ -1,0 +1,14 @@
+{
+  "name": "aoc-2018",
+  "version": "1.0.0",
+  "description": "Advent of Code 2018",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
+}
