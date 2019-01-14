@@ -1,5 +1,11 @@
 const fs = require("fs");
-const { calculateFrequency, findFirstDuplicateFrequency } = require("./day-1");
+const Lazy = require("lazy.js");
+const {
+  calculateFrequency,
+  findFirstDuplicateFrequency,
+  reduceWhile,
+  findFirstDuplicateFrequencyFP
+} = require("./day-1");
 
 function loadTestInput(filename) {
   const convertFileContentToIntegerArray = s =>
@@ -36,6 +42,34 @@ describe("findFirstDuplicateFrequency", () => {
   it("should work with test input", () => {
     return loadTestInput("../tasks/day1/input.txt").then(input =>
       expect(findFirstDuplicateFrequency(input)).toBe(72889)
+    );
+  });
+});
+
+test("reduceWhile", () => {
+  const sut = sequence => reduceWhile(
+    (acc, val) => acc + val, 
+    acc => acc > 9,
+    0,
+    sequence)
+  expect(sut(Lazy([1]))).toBe(1);
+  expect(sut(Lazy([1, 2, 3]))).toBe(6);
+  expect(sut(Lazy([1, 2, 3, 4]))).toBe(10);
+  expect(sut(Lazy([1, 2, 3, 4, 6]))).toBe(10);
+});
+
+describe("findFirstDuplicateFrequencyFP", () => {
+  it("should find the first repeated frequency", () => {
+    expect(findFirstDuplicateFrequencyFP([1, -2, 3, 1, 1, -2, 3, 4, 5])).toBe(2);
+    expect(findFirstDuplicateFrequencyFP([1, -1])).toBe(0);
+    expect(findFirstDuplicateFrequencyFP([3, 3, 4, -2, -4])).toBe(10);
+    expect(findFirstDuplicateFrequencyFP([-6, 3, 8, 5, -6])).toBe(5);
+    expect(findFirstDuplicateFrequencyFP([7, 7, -2, -7, -4])).toBe(14);
+  });
+  // !!! it is super low with a larger input size
+  xit("should work with test input", () => {
+    return loadTestInput("../tasks/day1/input.txt").then(input =>
+      expect(findFirstDuplicateFrequencyFP(input)).toBe(72889)
     );
   });
 });
