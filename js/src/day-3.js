@@ -1,3 +1,7 @@
+// This is a similar question on reddit
+// https://www.reddit.com/r/dailyprogrammer/comments/23b1pr/4182014_challenge_158_hard_intersecting_rectangles/
+
+
 function parseClaim(claim) {
   const [id, x, y, w, h] = claim
     .match(/#(\d+)\s*@\s*(\d+)\,(\d+)\:\s*(\d+)x(\d+)/)
