@@ -3,15 +3,20 @@
   "version": "1.0.0",
   "description": "Advent of Code 2018",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "tw": "jest --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^23.6.0"
+    "@types/jest": "^23.3.12",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.2"
   },
   "dependencies": {
+    "@types/node": "^10.12.18",
     "immutable": "^4.0.0-rc.12",
     "lazy.js": "^0.5.1"
   }
