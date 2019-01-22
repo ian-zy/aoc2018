@@ -16,8 +16,12 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
+    "@types/collections": "^5.0.0",
+    "@types/lodash": "^4.14.120",
     "@types/node": "^10.12.18",
+    "collections": "^5.1.7",
     "immutable": "^4.0.0-rc.12",
-    "lazy.js": "^0.5.1"
+    "lazy.js": "^0.5.1",
+    "lodash": "^4.17.11"
   }
 }
