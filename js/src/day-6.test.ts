@@ -1,10 +1,6 @@
 import fs from "fs";
+import { loadTestInputAsStringArray } from './utils'
 import { parseCoordinate, findLargestArea, findAnotherArea } from "./day-6";
-
-async function loadTestInputAsStringArray(filename: string) {
-  const fileContent = await fs.promises.readFile(filename, "utf8");
-  return fileContent.split("\n");
-}
 
 test("parseCoordinate", () => {
   expect(parseCoordinate("1, 1", 1)).toEqual({id: 1, x: 1, y: 1 });

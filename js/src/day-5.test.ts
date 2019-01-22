@@ -1,10 +1,6 @@
 import fs from "fs";
+import { loadTestInputAsStringArray } from './utils'
 import { reactPolymer, findShortestPolymer } from "./day-5";
-
-async function loadTestInputAsStringArray(filename: string) {
-  const fileContent = await fs.promises.readFile(filename, "utf8");
-  return fileContent.split("\n");
-}
 
 describe("reactPolymer", () => {
   it("should destroy all two adjacent units of the same type and opposite polarity", () => {
