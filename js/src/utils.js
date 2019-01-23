@@ -10,7 +10,13 @@ async function loadTestInputAsIntegerArray(filename) {
     return inputStrings.map(s => s.replace(/\+/, "")).map(s => parseInt(s));
 }
 
+async function loadSingleLineInputAsIntegerArray(filename) {
+    const inputStrings = await loadTestInputAsStringArray(filename)
+    return inputStrings[0].split(" ").map(a => parseInt(a))
+}
+
 module.exports = {
     loadTestInputAsStringArray,
-    loadTestInputAsIntegerArray
+    loadTestInputAsIntegerArray,
+    loadSingleLineInputAsIntegerArray
 }
