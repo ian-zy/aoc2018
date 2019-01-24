@@ -1,13 +1,55 @@
-const { List } = require("immutable");
+class Circle {
+  constructor() {
+    this.currentNode = {value: 0};
+    this.currentNode.prev = this.currentNode;
+    this.currentNode.next = this.currentNode;
+    this.size = 1;
+  }
+
+  getNodeClockwise(distance) {
+    let node = this.currentNode;
+    for(let i=0; i<distance; i++) {
+      node = node.next;
+    }
+    return node;
+  }
+
+  getNodeCounterClockwise(distance) {
+    let node = this.currentNode;
+    for(let i=0; i<distance; i++) {
+      node = node.prev;
+    }
+    return node;
+  }  
+
+  insertClockwise(distance, value) {
+    const node = this.getNodeClockwise(distance);
+    const newNode = {
+      value,
+      prev: node,
+      next: node.next
+    };
+    node.next = newNode;
+    newNode.next.prev = newNode;
+    this.currentNode = newNode;
+  }
+
+  removeCounterClockwise(distance) {
+    const node = this.getNodeCounterClockwise(distance);
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    this.currentNode = node.next;
+    return node.value;
+  }
+}
 
 function createGame(numberOfPlayers, lastMarble) {
-  let players = List();
+  let players = [];
   for(let i=0; i<numberOfPlayers; i++) {
-    players = players.push(List());
+    players.push(0);
   }
   return {
-    circle: List.of(0),
-    currenMarbleIndex: 0,
+    circle: new Circle(),
     nextMarble: 1,
     lastMarble,
     players,
@@ -20,37 +62,23 @@ function willPlaceSpecialMarble(game) {
 }
 
 function placeNextMarbleNormally(game) {
-  const insertionIndex = ((game.currenMarbleIndex + 1) % game.circle.size) + 1;
-
-  return {
-    ...game,
-    circle: game.circle.insert(insertionIndex, game.nextMarble),
-    currenMarbleIndex: insertionIndex,
-    nextMarble: game.nextMarble + 1,
-    nextPlayer: (game.nextPlayer + 1) % game.players.size
-  }
+  game.circle.insertClockwise(1, game.nextMarble);
+  game.nextMarble += 1;
+  game.nextPlayer = (game.nextPlayer + 1) % game.players.length;
 }
 
 function playSpecialMove(game) {
-  const removalIndex = (((game.currenMarbleIndex - 7) % game.circle.size) + game.circle.size) % game.circle.size;
-  const newCircle = game.circle.delete(removalIndex);
-  return {
-    ...game,
-    circle: newCircle,
-    currenMarbleIndex: removalIndex % newCircle.size,
-    players: game.players.update(game.nextPlayer, player => player.push(game.nextMarble, game.circle.get(removalIndex))),
-    nextMarble: game.nextMarble + 1,
-    nextPlayer: (game.nextPlayer + 1) % game.players.size
-  }
+  game.players[game.nextPlayer] += (game.nextMarble + game.circle.removeCounterClockwise(7));
+  game.nextMarble += 1;
+  game.nextPlayer = (game.nextPlayer + 1) % game.players.length;
 }
 
 function play(game) {
   if(willPlaceSpecialMarble(game)) {
-    game = playSpecialMove(game);
+    playSpecialMove(game);
   } else {
-    game = placeNextMarbleNormally(game);
+    placeNextMarbleNormally(game);
   }
-  return game;
 }
 
 function isGameInProgress(game) {
@@ -58,13 +86,13 @@ function isGameInProgress(game) {
 }
 
 function getWinningScore(game) {
-  return game.players.map(p => p.reduce((a, b) => a + b, 0)).max();
+  return Math.max(...game.players);
 }
 
 function computeHighScore(numOfPlayers, lastMarble) {
   let game = createGame(numOfPlayers, lastMarble);
   while(isGameInProgress(game)){
-    game = play(game);
+    play(game);
   }
   return getWinningScore(game);
 }

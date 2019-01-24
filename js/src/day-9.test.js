@@ -11,5 +11,8 @@ describe("computeHighScore", () => {
   });
   it("should work with task input", () => {
     expect(computeHighScore(478, 71240)).toBe(375465);
-  })
+  });
+  it("should work with large task input", () => {
+    expect(computeHighScore(478, 7124000)).toBe(3037741441);
+  });
 });
